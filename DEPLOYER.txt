@@ -1,0 +1,18 @@
+0/ (déjà fait normalement) 
+	Changer le relative path : dans le fichier package.json, overide
+	"homepage" : "http://yolan-pibrac.com/home",
+
+1/ Run localy
+
+aller dans le dossier website avec invite de commande
+run commande : npm start
+aller à l'adresse localhost:3000 (si c'est pas automatique)
+
+
+2/Deployer sur server
+
+aller dans le dossier website avec invite de commande
+run commande : npm run-script build
+copier l'interieur du dossier "build" dans le dossier "home" du serveur
+(l'adresse yolan-pibrac.com/home doit pointer vers le fichier "index.html")
+

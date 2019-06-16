@@ -1,0 +1,46 @@
+
+
+@font-face {
+font-family: 'codelight';
+src: url('assets/fonts/codelight/codelight.eot?') format('eot'),
+     url('assets/fonts/codelight/codelight.otf') format('truetype'),
+     url('assets/fonts/codelight/codelight.woff2') format('woff2'),
+     url('assets/fonts/codelight/codelight.woff') format('woff'),
+     url('assets/fonts/codelight/codelight.svg#QuadrantaBold') format('svg');
+font-weight: normal;
+font-style: normal;
+}
+
+
+@font-face {
+font-family: 'lemonmilk';
+src: url('assets/fonts/lemonmilk/lemonmilk.eot?') format('eot'),
+     url('assets/fonts/lemonmilk/lemonmilk.otf') format('truetype'),
+     url('assets/fonts/lemonmilk/lemonmilk.woff2') format('woff2'),
+     url('assets/fonts/lemonmilk/lemonmilk.woff') format('woff'),
+     url('assets/fonts/lemonmilk/lemonmilk.svg#QuadrantaBold') format('svg');
+font-weight: normal;
+font-style: normal;
+}
+
+
+@font-face {
+font-family: 'FuturaBT';
+src: url('assets/fonts/futuraLT/FuturaBT-Light.eot?') format('eot'),
+     url('assets/fonts/futuraLT/FuturaBT-Light.woff2') format('woff2'),
+     url('assets/fonts/futuraLT/FuturaBT-Light.woff') format('woff'),
+     url('assets/fonts/futuraLT/FuturaBT-Light.svg#QuadrantaBold') format('svg');
+font-weight: normal;
+font-style: normal;
+}
+
+@font-face {
+font-family: 'Codebold';
+src: url('assets/fonts/codebold/Code-Bold.eot?') format('eot'),
+     url('assets/fonts/codebold/Code-Bold.otf') format('truetype'),
+     url('assets/fonts/codebold/Code-Bold.woff2') format('woff2'),
+     url('assets/fonts/codebold/Code-Bold.woff') format('woff'),
+     url('assets/fonts/codebold/Code-Bold.svg#QuadrantaBold') format('svg');
+font-weight: normal;
+font-style: normal;
+}
