@@ -12,7 +12,6 @@ class URLImage extends Component {
       positionY : this.props.positionY,
       zoom : this.props.zoom,
     };
-
   }
 
   componentDidMount = () => {
@@ -22,9 +21,8 @@ class URLImage extends Component {
     });
     this.loadImage();
     window.addEventListener('scroll', this.handleScroll);
-
-
   }
+
   componentDidUpdate = (oldProps) => {
     if(this.state.positionX !== this.props.positionX || this.state.positionY !== this.props.positionY){
       this.setState({
@@ -34,15 +32,12 @@ class URLImage extends Component {
       })
       this.myImage.cache();
       //this.myImage.getLayer().draw();
-
     }
-
     if (oldProps.src !== this.props.src) {
       this.loadImage();
     };
-
-
   }
+
   componentWillUnmount = () =>  {
     this.image.removeEventListener('load', this.handleLoad);
     window.removeEventListener('scroll', this.handleScroll);
@@ -51,8 +46,6 @@ class URLImage extends Component {
   handleScroll = (event) => {
     let scrollTop = event.srcElement.body.scrollTop;
     console.log(scrollTop)
-
-
   }
 
   loadImage = () => {
@@ -68,7 +61,6 @@ class URLImage extends Component {
     // because "image" property is changed
     this.setState({
       image: this.image,
-
     },
     () => {
             this.myImage.cache();
@@ -86,10 +78,6 @@ class URLImage extends Component {
       })
       console.log(this)
   }
-
-
-
-
 
   render() {
     var x = this.props.positionX

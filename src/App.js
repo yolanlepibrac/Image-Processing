@@ -1,10 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
 import './fonts.css';
-import scrollToComponent from 'react-scroll-to-component';
-import {Motion, spring} from 'react-motion';
-import posed from 'react-pose';
-import ScrollLock, { TouchScrollable } from 'react-scrolllock';
 import SelectImg from './components/SelectImg'
 import ImageUploader from  './components/ImageUploader';
 import Imagedebase from './assets/images/case.jpg';
@@ -17,14 +13,9 @@ import Filter from './components/Filter';
 import InputRange from 'react-input-range';
 
 
-
-
 const INITIAL_STATE = {
   pictures: [],
 };
-
-
-// returns a function that calculates lanczos weight
 
 
 class App extends Component {
@@ -57,174 +48,107 @@ class App extends Component {
        this.setState({
            pictures: picture,
        });
-
    }
 
 
-    onDropFile(e) {
-      const files = e.target.files;
-      const allFilePromises = [];
+  onDropFile(e) {
+    const files = e.target.files;
+    const allFilePromises = [];
 
-      // Iterate over all uploaded files
-      for (let i = 0; i < files.length; i++) {
-        let f = files[i];
-        // Check for file extension
-        if (!this.hasExtension(f.name)) {
-          const newArray = this.state.notAcceptedFileType.slice();
-          newArray.push(f.name);
-          this.setState({notAcceptedFileType: newArray});
-          continue;
-        }
-        // Check for file size
-        if(f.size > this.props.maxFileSize) {
-          const newArray = this.state.notAcceptedFileSize.slice();
-          newArray.push(f.name);
-          this.setState({notAcceptedFileSize: newArray});
-          continue;
-        }
-
-        allFilePromises.push(this.readFile(f));
+    // Iterate over all uploaded files
+    for (let i = 0; i < files.length; i++) {
+      let f = files[i];
+      // Check for file extension
+      if (!this.hasExtension(f.name)) {
+        const newArray = this.state.notAcceptedFileType.slice();
+        newArray.push(f.name);
+        this.setState({notAcceptedFileType: newArray});
+        continue;
+      }
+      // Check for file size
+      if(f.size > this.props.maxFileSize) {
+        const newArray = this.state.notAcceptedFileSize.slice();
+        newArray.push(f.name);
+        this.setState({notAcceptedFileSize: newArray});
+        continue;
       }
 
-      Promise.all(allFilePromises).then(newFilesData => {
-        const dataURLs = this.state.pictures.slice();
-        const files = this.state.files.slice();
+      allFilePromises.push(this.readFile(f));
+    }
 
-        newFilesData.forEach(newFileData => {
-          dataURLs.push(newFileData.dataURL);
-          files.push(newFileData.file);
-        });
+    Promise.all(allFilePromises).then(newFilesData => {
+      const dataURLs = this.state.pictures.slice();
+      const files = this.state.files.slice();
 
-        this.setState({pictures: dataURLs, files: files});
+      newFilesData.forEach(newFileData => {
+        dataURLs.push(newFileData.dataURL);
+        files.push(newFileData.file);
       });
-    }
 
-    readFile(file) {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
+      this.setState({pictures: dataURLs, files: files});
+    });
+  }
 
-        // Read the image via FileReader API and save image result in state.
-        reader.onload = function (e) {
-          // Add the file name to the data URL
-          let dataURL = e.target.result;
-          dataURL = dataURL.replace(";base64", `;name=${file.name};base64`);
-          resolve({file, dataURL});
-        };
+  readFile(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
 
-        reader.readAsDataURL(file);
-      });
-    }
+      // Read the image via FileReader API and save image result in state.
+      reader.onload = function (e) {
+        // Add the file name to the data URL
+        let dataURL = e.target.result;
+        dataURL = dataURL.replace(";base64", `;name=${file.name};base64`);
+        resolve({file, dataURL});
+      };
 
-    ClickOnImg(pic) {
-      console.log(pic)
-      this.setState({
-        currentPicture : pic,
-      })
-    }
+      reader.readAsDataURL(file);
+    });
+  }
 
-    colorImg = () => {
+  ClickOnImg(pic) {
+    console.log(pic)
+    this.setState({
+      currentPicture : pic,
+    })
+  }
 
-    }
-
-    getDimensions = (e) => {
-
-      this.setState({dimensions:{width:e.width,
-                                 height:e.height}});
-      console.log(this.state.dimensions)
-
-    }
-
-    onMousemove(e){
-      if (e.ctrlKey) {
-        e.preventDefault();
-      }
-    }
-
-    setFilter = (e, n, slider, min, max) => {
-      this.setState({
-        currentFilter : e,
-        nameCurrentFilter : n,
-        slider : slider,
-        minSlider : min.toString(),
-        maxSlider : max.toString(),
-        valueFilter : (min+max)/2
-      })
-    }
-
-    writeColor = () => {
-      var a = 255
-      var b = 82
-      var c = 26
-      var aP = a/(a+b+c)
-      var bP = b/(a+b+c)
-      var cP = c/(a+b+c)
-      var d = Math.max(a, b, c)
-      console.log(d)
-      var aString = a.toString(10)
-      var bString = b.toString(10)
-      var cString = c.toString(10)
-      console.log(aString)
-      var color1
-      var color = "rgba(" + aString + "," + bString + "," + cString + ",1" + ")"
-      console.log(color)
-      if(Math.abs(a-b)<20 && Math.abs(a-c) < 20 && Math.abs(b-c) < 20){
-        color1 = "gris"
-      }else{
-        if(a<50 && b<50 && c<50){
-          color1 = "black"
-        }
-        if(a>205 && b>205 && c>205){
-          color1="white"
-        }
-        if(a<127 && b<127 && c <127){
-          color1 = "undefined"
-        }
-        if(d === a){
-          if(aP>0.4){
-            if(bP>cP*3 || cP>bP*3){
-              color1 = "undefined"
-            }else{
-              color1 = "red1"
-            }
-          }else{
-            if(bP>cP*2 || cP>bP*2){
-              color1 = "red2"
-            }else{
-              color1 = "notRed"
-            }
-          }
-        }
+  getDimensions = (e) => {
+    this.setState({dimensions:{width:e.width, height:e.height}});
+    console.log(this.state.dimensions)
+  }
 
 
-      }
-      console.log(color1)
-      this.setState({color : color})
-    }
+  setFilter = (e, n, slider, min, max) => {
+    this.setState({
+      currentFilter : e,
+      nameCurrentFilter : n,
+      slider : slider,
+      minSlider : min.toString(),
+      maxSlider : max.toString(),
+      valueFilter : (min+max)/2
+    })
+  }
 
-    handleChange = (event) => {
-      this.setState({valueFilter: event.target.value});
-    }
+  handleChange = (event) => {
+    this.setState({valueFilter: event.target.value});
+  }
 
-Zoom = () => {
-  this.setState({
-    zoom : this.state.zoom+this.state.zoom/10,
-  });
-  console.log(this.state.zoom)
-}
+  Zoom = () => {
+    this.setState({
+      zoom : this.state.zoom+this.state.zoom/10,
+    });
+  }
 
-Unzoom = () => {
-  this.setState({
-    zoom : this.state.zoom-this.state.zoom/10,
-  });
-  console.log(this.state.zoom)
-}
-
+  Unzoom = () => {
+    this.setState({
+      zoom : this.state.zoom-this.state.zoom/10,
+    });
+  }
 
   render() {
     var Image = require('./assets/images/case.jpg')
-
     return (
-      <div style={{'height':'100%',}} onWheel={(e) => this.onMousemove(e)}>
+      <div style={{'height':'100%',}}>
         <header className="App-header" >
             <div style={{fontFamily: 'codelight', marginLeft : 50, width : 200, textAlign :'left', fontSize:20}}>{this.state.pageName}
             </div>
@@ -265,9 +189,8 @@ Unzoom = () => {
             width={this.state.dimensions.height/this.state.dimensions.width<1?700:500*this.state.dimensions.width/this.state.dimensions.height}
             height={this.state.dimensions.height/this.state.dimensions.width>=1?500:700*this.state.dimensions.height/this.state.dimensions.width}>
           </ImageModifiee>
-          <div style={{width:"40%", backgroundColor:'rgba(255, 237, 209,1)', height:'90vh'}}
-            onClick={this.writeColor}>
-            <div style={{backgroundColor:'rgba(229, 223, 213,1)', paddingTop:10, width:"100%", height:80, cursor:'pointer', textAlign:'center', fontFamily: 'codebold', fontSize:25, alignItems:'center'}} onClick={this.colorImg}>
+          <div style={{width:"40%", backgroundColor:'rgba(255, 237, 209,1)', height:'90vh'}}>
+            <div style={{backgroundColor:'rgba(229, 223, 213,1)', paddingTop:10, width:"100%", height:80, textAlign:'center', fontFamily: 'codebold', fontSize:25, alignItems:'center'}}>
               <div style={{}}>Filters
               </div>
               <div style={{width : "100%",  height : 40}}>

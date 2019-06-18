@@ -225,7 +225,6 @@ class ReactImageUploadComponent extends React.Component {
           <div className="errorsContainer">
             {this.renderErrors()}
           </div>
-
           <input
             type="file"
             ref={input => this.inputElement = input}

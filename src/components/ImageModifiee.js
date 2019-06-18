@@ -9,9 +9,7 @@ import ImageDownload from '../assets/images/download.png';
 
 
 
-
 class ImageModifiee extends Component {
-
 
   constructor(props) {
     super(props);
@@ -25,66 +23,63 @@ class ImageModifiee extends Component {
     };
   }
 
+  onMouseWheel(e){
 
-    onMouseWheel(e){
-
-      var bounds = e.target.getBoundingClientRect();
-      var x = (e.clientX - bounds.left)/this.props.width;
-      var y = (e.clientY - bounds.top)/this.props.height;
-      if (e.ctrlKey) {
-        e.preventDefault();
-          if (e.deltaY < 0) {
-            this.setState({
-              positionX : x,
-              positionY: y,
-              zoom : this.state.zoom-this.state.zoom/10,
-            })
-          }else{
-            this.setState({
-              positionX : x,
-              positionY: y,
-              zoom : this.state.zoom+this.state.zoom/10,
-            })
-          }
-        //console.log(this.state.positionX)
-     }
+    var bounds = e.target.getBoundingClientRect();
+    var x = (e.clientX - bounds.left)/this.props.width;
+    var y = (e.clientY - bounds.top)/this.props.height;
+    if (e.ctrlKey) {
+      e.preventDefault();
+        if (e.deltaY < 0) {
+          this.setState({
+            positionX : x,
+            positionY: y,
+            zoom : this.state.zoom-this.state.zoom/10,
+          })
+        }else{
+          this.setState({
+            positionX : x,
+            positionY: y,
+            zoom : this.state.zoom+this.state.zoom/10,
+          })
+        }
+      //console.log(this.state.positionX)
+    }
   }
 
 
+  zoom(){
+    this.setState({
+      zoom : this.state.zoom-this.state.zoom/10,
+    });
+    console.log(this.state.zoom)
+    this.uRLImage.current.rerender();
+  }
 
+  unzoom(){
+    this.setState({
+      zoom : this.state.zoom+this.state.zoom/10,
+    });
+    console.log(this.state.zoom)
+    this.uRLImage.current.rerender();
+  }
 
-zoom(){
-  this.setState({
-    zoom : this.state.zoom-this.state.zoom/10,
-  });
-  console.log(this.state.zoom)
-  this.uRLImage.current.rerender();
-}
+  download(){
+    var canvas = document.getElementsByClassName("konvajs-content")[0].childNodes[0];
+    var dataURL = canvas.toDataURL();
+    console.log(dataURL)
+    this.downloadURI(dataURL, 'myImage.png');
+  }
 
-unzoom(){
-  this.setState({
-    zoom : this.state.zoom+this.state.zoom/10,
-  });
-  console.log(this.state.zoom)
-  this.uRLImage.current.rerender();
-}
-
-download(){
-  var canvas = document.getElementsByClassName("konvajs-content")[0].childNodes[0];
-  var dataURL = canvas.toDataURL();
-  console.log(dataURL)
-  this.downloadURI(dataURL, 'myImage.png');
-}
-
-downloadURI = (uri, name) => {
-  var link = document.createElement('a');
-  link.download = name;
-  link.href = uri;
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-  //delete link;
-}
+  downloadURI = (uri, name) => {
+    var link = document.createElement('a');
+    link.download = name;
+    link.href = uri;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    //delete link;
+  }
 
   render() {
 
@@ -111,7 +106,7 @@ downloadURI = (uri, name) => {
           </div>
 
           <div style={{  position:'absolute', bottom:'7vh', left:'calc(50vw - 100px)', marginTop:20, height:50, width:200, display:'flex', flexDirection:"row", justifyContent:"center", borderRadius:"50%"}}>
-            {/*
+            {/* zoom buttons
             <div style={{ width:40, height:40, backgroundColor:"#222222", borderRadius:"50%", backgroundImage: "url("+ ImageMoins +")", backgroundSize: 'cover',}}
                   onClick={() => {this.zoom()}}>
             </div>

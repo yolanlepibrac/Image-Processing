@@ -1,10 +1,6 @@
 import React, { Component } from 'react';
 
-
-
-
 class SelectImg extends Component {
-
 
   constructor(props) {
     super(props);
@@ -13,7 +9,6 @@ class SelectImg extends Component {
       dimensions: {},
     };
   }
-
 
   selection = () => {
     this.props.onClick()
@@ -24,11 +19,13 @@ class SelectImg extends Component {
   }
 
   onImgLoad = ({target:img}) =>  {
-        this.setState({dimensions:{height:img.offsetHeight,
-                                   width:img.offsetWidth}});
-    }
-
-
+    this.setState({
+      dimensions:{
+        height:img.offsetHeight,
+        width:img.offsetWidth
+      }
+    });
+  }
 
 
   render() {
@@ -42,7 +39,5 @@ class SelectImg extends Component {
     );
   }
 }
-
-
 
 export default SelectImg;

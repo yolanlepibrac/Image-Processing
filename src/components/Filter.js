@@ -5,10 +5,7 @@ import Konva from "konva";
 import URLImage from "./URLImage";
 
 
-
-
 class Filter extends Component {
-
 
   constructor(props) {
     super(props);
@@ -17,12 +14,9 @@ class Filter extends Component {
     };
   }
 
-
   setFilter = () => {
     this.props.setFilter(this.props.filter, this.props.name, this.props.slider, this.props.min, this.props.max)
   }
-
-
 
 
   render() {
@@ -49,7 +43,6 @@ class Filter extends Component {
     );
   }
 }
-
 
 
 export default Filter;
