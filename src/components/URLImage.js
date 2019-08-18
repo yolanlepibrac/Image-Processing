@@ -89,7 +89,6 @@ class URLImage extends Component {
           className = "ImageDisplayed"
           style = {{borderRadius:10}}
           image={this.state.image}
-
           filters={this.props.filter}
           YolanFilter_1={this.props.value}
           Noise={this.props.value}

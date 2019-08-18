@@ -6,13 +6,7 @@ import SelectImg from './SelectImg';
 import Imagedebase from '../assets/images/case.jpg';
 import ImageClose from '../assets/images/quit.png';
 
-const styles = {
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  flexWrap: "wrap",
-  width: "100%"
-};
+import {isMobile} from 'react-device-detect';
 
 class ReactImageUploadComponent extends React.Component {
   constructor(props) {
@@ -177,7 +171,7 @@ class ReactImageUploadComponent extends React.Component {
   renderPreview() {
     return (
       <div className="uploadPicturesWrapper">
-        <FlipMove enterAnimation="fade" leaveAnimation="fade" style={styles}>
+        <FlipMove enterAnimation="fade" leaveAnimation="fade" style={{display: "flex", flexDirection:isMobile?"row":"column", alignItems: "center",justifyContent:isMobile?"flex-start":"center",width: "100%", position: "static"}}>
           {this.renderPreviewPictures()}
         </FlipMove>
       </div>
@@ -192,7 +186,8 @@ class ReactImageUploadComponent extends React.Component {
           <SelectImg id="imageDeBase" src={picture} className="uploadPicture" alt="preview"
               onClick={(event) => {this.props.ClickOnImg(picture);this.ClickOnImg(picture)}}
               current={this.state.currentPicture === picture ? true : false}
-              getDimensions={(e) => {this.props.getDimensions(e)}}>
+              getDimensions={(e) => {this.props.getDimensions(e)}}
+              width={isMobile?"100%":"80%"}>
           </SelectImg>
         </div>
       );
@@ -219,12 +214,17 @@ class ReactImageUploadComponent extends React.Component {
 
   render() {
     return (
-      <div className={"fileUploader " + this.props.className} style={this.props.style}>
+      <div className={"fileUploader " + this.props.className}>
+        <div className="errorsContainer">
+          {isMobile?null:this.renderErrors()}
+        </div>
         <div className="fileContainer" style={this.props.fileContainerStyle}>
           {this.renderLabel()}
-          <div className="errorsContainer">
-            {this.renderErrors()}
-          </div>
+          {isMobile ?
+            <div style={{backgroundColor:"rgba(100,100,100,1)", marginLeft:20, cursor:"pointer", minWidth:50, height:50, fontSize:30, display:"flex", flexDirection:"row",  alignItems:"center", textAlign:"center", justifyContent:"center", borderRadius:"50%", color:"white", boxShadow:"1px 1px 1px 1px rgba(0,0,0,0.2)"}} onClick={this.triggerFileUpload}>+
+            </div>
+          :null
+          }
           <input
             type="file"
             ref={input => this.inputElement = input}
@@ -237,17 +237,16 @@ class ReactImageUploadComponent extends React.Component {
           <SelectImg id="imageDeBase" src={Imagedebase} alt="preview"
               onClick={(event) => {this.props.ClickOnImg(Imagedebase);this.ClickOnImg(Imagedebase)}}
               current={this.state.currentPicture === Imagedebase ? true : false}
-              getDimensions={(e) => {this.props.getDimensions(e)}}>
+              getDimensions={(e) => {this.props.getDimensions(e)}}
+              width={isMobile?"100%":"80%"}>
           </SelectImg>
           { this.props.withPreview ? this.renderPreview() : null }
-          <button
-            type={this.props.buttonType}
-            className={"chooseFileButton " + this.props.buttonClassName}
-            style={this.props.buttonStyles}
-            onClick={this.triggerFileUpload}
-          >
+          {!isMobile ?
+            <button style={{backgroundColor:'rgba(25,25,25,1)', cursor:"pointer", color:"white", fontSize:25, borderRadius:10, width:"80%", marginTop:10, padding:0, height:50}} onClick={this.triggerFileUpload}>
             {this.props.buttonText}
-          </button>
+            </button>
+          :null
+          }
         </div>
       </div>
     )

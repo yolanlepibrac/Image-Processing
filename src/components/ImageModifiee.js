@@ -7,7 +7,7 @@ import ImagePlus from '../assets/images/plus.png';
 import ImageMoins from '../assets/images/moins.png';
 import ImageDownload from '../assets/images/download.png';
 
-
+import {isMobile} from 'react-device-detect';
 
 class ImageModifiee extends Component {
 
@@ -24,7 +24,6 @@ class ImageModifiee extends Component {
   }
 
   onMouseWheel(e){
-
     var bounds = e.target.getBoundingClientRect();
     var x = (e.clientX - bounds.left)/this.props.width;
     var y = (e.clientY - bounds.top)/this.props.height;
@@ -85,7 +84,7 @@ class ImageModifiee extends Component {
 
     return (
 
-      <div style={{'width':'100%', display:'flex', height : '90vh', overflow : 'scroll', backgroundColor:'rgba(255, 221, 235,1)', justifyContent:'center', alignItems:'center', flexDirection:'column'}}>
+      <div style={{'width':'100%', display:'flex', height : isMobile?"40vh":'90vh', overflow : isMobile?'hidden':'scroll', backgroundColor:'rgba(255, 221, 235,1)', justifyContent:'center', alignItems:'center', flexDirection:'column'}}>
         <div style={{ display:'flex', flexDirection:'column', overflowX:'hidden', justifyContent:'center', alignItems:'center', }}>
           <div style={{ display:'flex', flexDirection:'column', overflowX:'hidden', justifyContent:'center', alignItems:'center', }}>
             <Stage  height={this.props.height} width={this.props.width}>
@@ -105,7 +104,7 @@ class ImageModifiee extends Component {
             </Stage>
           </div>
 
-          <div style={{  position:'absolute', bottom:'7vh', left:'calc(50vw - 100px)', marginTop:20, height:50, width:200, display:'flex', flexDirection:"row", justifyContent:"center", borderRadius:"50%"}}>
+          <div style={{  position:'absolute', bottom:isMobile?5:'7vh', left:isMobile?'calc(50vw - 20px)':'calc(50vw - 100px)', marginTop:isMobile?0:20, height:isMobile?40:50, width:isMobile?40:200, display:'flex', flexDirection:"row", justifyContent:"center", borderRadius:"50%"}}>
             {/* zoom buttons
             <div style={{ width:40, height:40, backgroundColor:"#222222", borderRadius:"50%", backgroundImage: "url("+ ImageMoins +")", backgroundSize: 'cover',}}
                   onClick={() => {this.zoom()}}>
