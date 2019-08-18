@@ -1,17 +1,22 @@
 import React, { Component } from 'react';
+
+
 import './App.css';
 import './fonts.css';
 import SelectImg from './components/SelectImg'
 import ImageUploader from  './components/ImageUploader';
 import Imagedebase from './assets/images/case.jpg';
+import ImageModifiee from './components/ImageModifiee';
+import Filter from './components/Filter';
+
 import { Stage, Layer, Image, Text, Rect ,  } from 'react-konva';
 import Konva from "konva";
 import useImage from 'use-image';
 import { render } from 'react-dom';
-import ImageModifiee from './components/ImageModifiee';
-import Filter from './components/Filter';
 import InputRange from 'react-input-range';
 
+
+import {isMobile} from 'react-device-detect';
 
 const INITIAL_STATE = {
   pictures: [],
@@ -26,7 +31,6 @@ class App extends Component {
       file: null,
       pictures: [],
       Images:[],
-      colorBoutonAdd:'rgba(25,25,25,1)',
       currentPicture : Imagedebase,
       dimensions: {width:170, height:105},
       currentFilter : [Konva.Filters],
@@ -145,31 +149,31 @@ class App extends Component {
     });
   }
 
+
   render() {
     var Image = require('./assets/images/case.jpg')
     return (
-      <div style={{'height':'100%',}}>
-        <header className="App-header" >
-            <div style={{fontFamily: 'codelight', marginLeft : 50, width : 200, textAlign :'left', fontSize:20}}>{this.state.pageName}
+      <div style={{height:isMobile?"80vh":'100%',}}>
+        <header className="App-header" style={{display:"flex", flexDirection:"row", justifyContent:"space-between", position:"absolute", top:0, left:0}}>
+            <div style={{fontFamily: 'codelight', width:20, marginLeft : 50, width : 200, textAlign :'left', fontSize:20}}>{this.state.pageName}
             </div>
-            <a href="http://yolan-pibrac.com/home/" style={{ fontSize: 17, textDecoration:'none', color:'white'}}>
+            <a href="http://yolan-pibrac.com/home/" style={{width:"100%", fontSize: isMobile?10:17, textDecoration:'none', color:'white'}}>
               yolan-pibrac.com
             </a>
-            <div className="menu" style={{marginRight:50}} >
+            <div className="menu" style={{width:20, marginRight:50}} >
 
               <div style={{flex:1, width : 200}} >
               </div>
             </div>
         </header>
 
-        <div style={{'height':'100%', display:'flex', flexDirection:'row', marginTop:'5vh'}}>
-          <div id='menugauche' style={{height:'90vh', width:600, backgroundColor:'rgba(244,244,244,1)',  overflow:'scroll', overflowX:'hidden'}}>
-            <div style={{display:'flex', flexDirection:'column', alignItems:'center', paddingTop:20}}>
+        <div style={{'height':isMobile?"":'100%', display:'flex', flexDirection:isMobile?"column":'row', marginTop:'5vh'}}>
+          <div id='menugauche' style={{height:isMobile?"20vh":'90vh', width:isMobile?"100%":600, backgroundColor:'rgba(244,244,244,1)',  overflowY:isMobile?'hidden':'auto', overflowX:isMobile?"scroll":'hidden'}}>
+            <div style={{display:'flex', flexDirection:'column', alignItems:'center', paddingTop:isMobile?"2.5vh":20}}>
               <ImageUploader
                   getDimensions={this.getDimensions}
                   ClickOnImg = {(event) => this.ClickOnImg(event)}
-                  fileContainerStyle = {{width:"100%", height:'100%', backgroundColor:'rgba(25,25,255,0)', margin:0, padding:0, position:'relative'}}
-                  buttonStyles={{backgroundColor:this.state.colorBoutonAdd, width:"80%", marginTop:10, padding:0, height:50}}
+                  fileContainerStyle = {{ height:'100%', backgroundColor:'rgba(25,25,255,0)', margin:0, padding:0, display:"flex", flexDirection:isMobile?"row":"column", position:"relative"}}
                   withIcon={false}
                   buttonText=<div>+</div>
                   onChange={this.onDrop}
@@ -189,25 +193,30 @@ class App extends Component {
             width={this.state.dimensions.height/this.state.dimensions.width<1?700:500*this.state.dimensions.width/this.state.dimensions.height}
             height={this.state.dimensions.height/this.state.dimensions.width>=1?500:700*this.state.dimensions.height/this.state.dimensions.width}>
           </ImageModifiee>
-          <div style={{width:"40%", backgroundColor:'rgba(255, 237, 209,1)', height:'90vh'}}>
-            <div style={{backgroundColor:'rgba(229, 223, 213,1)', paddingTop:10, width:"100%", height:80, textAlign:'center', fontFamily: 'codebold', fontSize:25, alignItems:'center'}}>
-              <div style={{}}>Filters
-              </div>
-              <div style={{width : "100%",  height : 40}}>
-              {this.state.slider ? <input
+          <div style={{width:isMobile?"100vw":"40%", backgroundColor:isMobile?"white":'rgba(255, 237, 209,1)', height:isMobile?"":'90vh'}}>
+            <div style={{backgroundColor:isMobile?"white":'rgba(229, 223, 213,1)', paddingTop:isMobile?"1vh":10, width:"100%", height:isMobile?"5vh":"", textAlign:'center', fontFamily: 'codebold', fontSize:25, alignItems:'center'}}>
+              {isMobile?
+                null
+              :
+                <div style={{}}>Filters
+                </div>
+              }
+              <div style={{width : "100%",  height :isMobile?"2vh":40}}>
+              {this.state.slider ?
+                <input
                   id="typeinp"
                   class = "inputRange"
                   type="range"
                   min={this.state.minSlider} max={this.state.maxSlider}
                   value={this.state.valueFilter}
                   onChange={this.handleChange}
-                  style = {{marginTop: 15, marginLeft : '0%', height: 20, width: '70%', }}
+                  style = {{marginTop: isMobile?0:15, marginLeft : '0%', height:isMobile?"3vh":20, width: isMobile?"80vw":'70%'}}
                   />:null
                 }
               </div>
             </div>
 
-            <div style={{ width : "100%", display:"flex", flexDirection :"row", justifyContent:"start", marginLeft : 30, marginTop:30, "flex-wrap": "wrap", alignItems:'start',  height:'75vh', overflowX:'hidden', overflowY:'scroll'}}>
+            <div style={{ width : isMobile?"":"100%", display:"flex", flexDirection :"row", justifyContent:"start", marginLeft : isMobile?10:30, marginTop:isMobile?0:30, "flex-wrap": isMobile?"":"wrap", alignItems:'start',  height:isMobile?"15vh":'75vh', overflowX:isMobile?"scroll":'hidden', overflowY:isMobile?"hidden":'scroll'}}>
               <Filter filter={[Konva.Filters]} slider={false} min={0} max={10} value={this.state.valueFilter} setFilter={this.setFilter} name='#NoFilter' src={this.state.currentPicture} current={this.state.nameCurrentFilter}/>
               <Filter filter={[Konva.Filters.Grayscale]} slider={true} min={0} max={100} value={this.state.valueFilter} setFilter={this.setFilter} name='Black & White' src={this.state.currentPicture}  current={this.state.nameCurrentFilter}/>
               <Filter filter={[Konva.Filters.YolanFilter_RetroFuturism]} slider={true} min={0} max={100} value={this.state.valueFilter} setFilter={this.setFilter} name='retro futurist' src={this.state.currentPicture} current={this.state.nameCurrentFilter}/>
